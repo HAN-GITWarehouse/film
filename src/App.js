@@ -48,9 +48,11 @@ class App extends Component {
     const { navBar,currentID } =this.state
     return (
       <div className="Container">
-         {
-          this.switchComponents(currentID)
-         }
+         <div>
+            {
+              this.switchComponents(currentID)
+            }
+         </div>
          <ul className='navBar'>
             {
               navBar.map(item=>{
