@@ -25,6 +25,6 @@ ul li {
 }
 
 .Active {
-  background: #ef4238;
-  color: #fff;
+  background: #ef4238!important;
+  color: #fff!important
 }

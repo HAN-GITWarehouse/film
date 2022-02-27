@@ -5,7 +5,7 @@ class Cinema extends Component {
 
     state = {
         CinemaList: [],
-        filmList: []
+        queryValue: ''
     }
 
     componentDidMount() {
@@ -20,26 +20,24 @@ class Cinema extends Component {
             const { data: { data: { cinemas: CinemaList } } } = res || {}
             this.setState({
                 CinemaList,
-                filmList: CinemaList
             })
         })
     }
 
     HandleInout = (event) => {
-        const { filmList } = this.state
-        const newList = filmList.filter(item => item.name.includes(event.target.value));
-        this.setState({
-            CinemaList: newList
-        })
+        this.setState({ queryValue: event.target.value })
+    }
+
+    FuzzyQueryCinemaList = () => {
+        return this.state.CinemaList.filter(item => item.name.toUpperCase().includes(this.state.queryValue) || item.address.toUpperCase().includes(this.state.queryValue))
     }
 
     render() {
-        const { CinemaList } = this.state
         return (
             <div className='Cinema-Container'>
-                <input type="text" style={{ width: '99%', height: '50px', display: 'block' }} onInput={this.HandleInout} />
+                <input type="text" style={{ width: '99%', height: '50px', display: 'block' }} value={this.state.queryValue} onChange={this.HandleInout} />
                 {
-                    CinemaList.map(item => {
+                    this.FuzzyQueryCinemaList().map(item => {
                         return <dl key={item.cinemaId} style={{ border: '1px solid #cecece', padding: '10px' }}>
                             <dt style={{ fontSize: '20px', lineHeight: '40px' }}>{item.name}</dt>
                             <dd style={{ fontSize: '14px', lineHeight: '20px' }}>{item.address}</dd>

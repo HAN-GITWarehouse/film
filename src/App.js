@@ -2,69 +2,51 @@ import React, { Component } from 'react';
 import Film from './components/film';
 import Cinema from './components/cinema';
 import Mine from './components/mine';
+import TabBar from './components/TabBar';
+import NavBar from './components/NavBar';
 import './App.css'
 
 class App extends Component {
-  constructor(){
-    super()
-    this.state={
-      navBar:[
-        {
-          id:1,
-          text:'电影'
-        },{
-          id:2,
-          text:"影院"
-        },{
-          id:3,
-          text:"我的"
-        }
-      ],
-      currentID:1,
+
+  state = {
+    componentsID: 1
+  }
+
+
+  updataComponent = (id) => {
+    console.log(id);
+    this.setState({ componentsID: id })
+  }
+
+  gotoMineComponet = () => {
+    this.setState({ componentsID: 3 })
+  }
+
+  switchComponents() {
+
+    const { componentsID } = this.state
+
+    switch (componentsID) {
+      case 2:
+        return <Cinema />
+      case 3:
+        return <Mine />
+      default:
+        return <Film />
     }
   }
 
-  navBarTab=(id)=>{ 
 
-    this.setState({
-       currentID:id,
-    })
-
-  }
-
-
-  switchComponents(id){
-      switch(id){
-        case 2:
-          return <Cinema/>
-        case 3:  
-          return <Mine/>
-        default:
-          return <Film/>
-      }
-  }
-  
   render() {
-    const { navBar,currentID } =this.state
     return (
       <div className="Container">
-         <div>
-            {
-              this.switchComponents(currentID)
-            }
-         </div>
-         <ul className='navBar'>
-            {
-              navBar.map(item=>{
-                return <li 
-                          className={item.id===currentID?'Active':""} 
-                          key={item.id} 
-                          onClick={()=>{this.navBarTab(item.id)}}>
-                          { item.text }
-                       </li>
-              })
-            }
-         </ul>
+        <NavBar gotoMineComponet={this.gotoMineComponet} />
+        <div>
+          {
+            this.switchComponents()
+          }
+        </div>
+        <TabBar componetId={this.state.componentsID} updataComponent={this.updataComponent} />
       </div>
     );
   }
